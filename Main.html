@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2-Month AI Mastery Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .status-badge {
+            transition: all 0.3s ease;
+        }
+        .spinning-loader {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        /* Circular Progress Bar CSS */
+        .circular-progress {
+            position: relative;
+            height: 150px;
+            width: 150px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: conic-gradient(#4ADE80 0deg, #E5E7EB 0deg);
+            transition: background 0.5s ease;
+        }
+        .circular-progress::before {
+            content: "";
+            position: absolute;
+            height: 85%;
+            width: 85%;
+            background-color: white;
+            border-radius: 50%;
+        }
+        .progress-value {
+            position: relative;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1F2937;
+            z-index: 2;
+        }
+        /* Hide scrollbar for a cleaner look */
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+        body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        body::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white bg-opacity-95 backdrop-blur-lg shadow-lg z-50 rounded-b-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 text-2xl font-bold text-indigo-600">
+                        🚀 AI Mastery 2025
+                    </div>
+                </div>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button id="nav-home" class="nav-link px-3 py-2 text-sm font-medium rounded-full hover:bg-indigo-600 hover:text-white transition-colors duration-300" onclick="showPage('home')">Home</button>
+                    <button id="nav-stage1" class="nav-link px-3 py-2 text-sm font-medium rounded-full hover:bg-indigo-600 hover:text-white transition-colors duration-300" onclick="showPage('stage1')">Foundations</button>
+                    <button id="nav-stage2" class="nav-link px-3 py-2 text-sm font-medium rounded-full hover:bg-indigo-600 hover:text-white transition-colors duration-300" onclick="showPage('stage2')">ML Basics</button>
+                    <button id="nav-stage3" class="nav-link px-3 py-2 text-sm font-medium rounded-full hover:bg-indigo-600 hover:text-white transition-colors duration-300" onclick="showPage('stage3')">Deep Learning</button>
+                    <button id="nav-stage4" class="nav-link px-3 py-2 text-sm font-medium rounded-full hover:bg-indigo-600 hover:text-white transition-colors duration-300" onclick="showPage('stage4')">GenAI</button>
+                    <button id="nav-stage5" class="nav-link px-3 py-2 text-sm font-medium rounded-full hover:bg-indigo-600 hover:text-white transition-colors duration-300" onclick="showPage('stage5')">Production</button>
+                    <button id="nav-progress" class="nav-link px-3 py-2 text-sm font-medium rounded-full hover:bg-indigo-600 hover:text-white transition-colors duration-300" onclick="showPage('progress')">Progress</button>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div id="overallProgress" class="h-full bg-green-500 transition-all duration-500" style="width: 0%;"></div>
+                    </div>
+                    <div id="timeRemaining" class="text-sm font-bold text-indigo-600 hidden sm:block">60 days left</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
+
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="text-center text-white mb-8">
+                <h1 class="text-5xl font-extrabold mb-4 text-shadow-lg">2-Month AI Mastery Journey</h1>
+                <p class="text-xl opacity-90">From ML Basics to Production-Ready GenAI Applications</p>
+            </div>
+            
+            <div class="bg-white rounded-3xl p-8 shadow-2xl">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800">🗓️ Your Learning Timeline</h2>
+                    <p class="text-gray-600 mt-2">Optimized for intensive 2-month learning with your image classification background</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Timeline Stage 1 -->
+                    <div class="bg-gradient-to-br from-gray-50 to-gray-200 p-6 rounded-2xl shadow-md border-l-4 border-green-500 transition-transform duration-300 hover:scale-105 cursor-pointer" onclick="showPage('stage1')">
+                        <h3 class="text-xl font-bold flex items-center gap-2 text-gray-800">🌱 Week 1: Foundations</h3>
+                        <p class="text-sm text-gray-500 mb-4">7 days • 4-5 hours/day</p>
+                        <p class="text-gray-700">Math refresher, Python essentials, and core ML concepts. We'll accelerate through the basics.</p>
+                    </div>
+                    <!-- Timeline Stage 2 -->
+                    <div class="bg-gradient-to-br from-gray-50 to-gray-200 p-6 rounded-2xl shadow-md border-l-4 border-blue-500 transition-transform duration-300 hover:scale-105 cursor-pointer" onclick="showPage('stage2')">
+                        <h3 class="text-xl font-bold flex items-center gap-2 text-gray-800">🤖 Week 2-3: ML Mastery</h3>
+                        <p class="text-sm text-gray-500 mb-4">14 days • 5-6 hours/day</p>
+                        <p class="text-gray-700">Classical ML algorithms, feature engineering, and model evaluation. Build 4 complete projects.</p>
+                    </div>
+                    <!-- Timeline Stage 3 -->
+                    <div class="bg-gradient-to-br from-gray-50 to-gray-200 p-6 rounded-2xl shadow-md border-l-4 border-orange-500 transition-transform duration-300 hover:scale-105 cursor-pointer" onclick="showPage('stage3')">
+                        <h3 class="text-xl font-bold flex items-center gap-2 text-gray-800">🧠 Week 4-5: Deep Learning</h3>
+                        <p class="text-sm text-gray-500 mb-4">14 days • 6-7 hours/day</p>
+                        <p class="text-gray-700">Neural networks, CNNs, RNNs, and Transformers. Leverage your image classification knowledge.</p>
+                    </div>
+                    <!-- Timeline Stage 4 -->
+                    <div class="bg-gradient-to-br from-gray-50 to-gray-200 p-6 rounded-2xl shadow-md border-l-4 border-pink-500 transition-transform duration-300 hover:scale-105 cursor-pointer" onclick="showPage('stage4')">
+                        <h3 class="text-xl font-bold flex items-center gap-2 text-gray-800">🔥 Week 6-7: Generative AI</h3>
+                        <p class="text-sm text-gray-500 mb-4">14 days • 7-8 hours/day</p>
+                        <p class="text-gray-700">GANs, LLMs, Diffusion Models, and state-of-the-art GenAI applications.</p>
+                    </div>
+                    <!-- Timeline Stage 5 -->
+                    <div class="bg-gradient-to-br from-gray-50 to-gray-200 p-6 rounded-2xl shadow-md border-l-4 border-purple-500 transition-transform duration-300 hover:scale-105 cursor-pointer" onclick="showPage('stage5')">
+                        <h3 class="text-xl font-bold flex items-center gap-2 text-gray-800">🚀 Week 8: Production</h3>
+                        <p class="text-sm text-gray-500 mb-4">7 days • 6-8 hours/day</p>
+                        <p class="text-gray-700">MLOps, deployment, and building production-ready applications. Portfolio preparation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 1: Foundations -->
+        <div id="stage1" class="page">
+            <div class="bg-white rounded-3xl p-8 shadow-2xl mb-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="text-5xl">🌱</span>
+                    <div>
+                        <h1 class="text-4xl font-extrabold text-gray-800">Stage 1: Foundations</h1>
+                        <p class="text-gray-600">Week 1 • 4-5 hours/day • Accelerated track for your background</p>
+                    </div>
+                </div>
+                <div class="text-sm font-bold text-indigo-600 mb-4">⏱️ Total Time: 35 hours over 7 days</div>
+                <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="stage1Progress" class="h-full bg-green-500 transition-all duration-500" style="width: 0%;"></div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">📚 Learning Topics</h3>
+                    <div id="topics-stage1">
+                        <!-- Topics will be dynamically added here -->
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">🔗 Resources</h3>
+                    <div id="resources-stage1">
+                        <!-- Resources will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 shadow-2xl mt-8 mb-8">
+                <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">🚀 Projects</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-stage1">
+                    <!-- Projects will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 2: ML Basics -->
+        <div id="stage2" class="page">
+            <div class="bg-white rounded-3xl p-8 shadow-2xl mb-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="text-5xl">🤖</span>
+                    <div>
+                        <h1 class="text-4xl font-extrabold text-gray-800">Stage 2: ML Basics</h1>
+                        <p class="text-gray-600">Week 2-3 • 5-6 hours/day</p>
+                    </div>
+                </div>
+                <div class="text-sm font-bold text-indigo-600 mb-4">⏱️ Total Time: 70 hours over 14 days</div>
+                <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="stage2Progress" class="h-full bg-blue-500 transition-all duration-500" style="width: 0%;"></div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">📚 Learning Topics</h3>
+                    <div id="topics-stage2">
+                        <!-- Topics will be dynamically added here -->
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">🔗 Resources</h3>
+                    <div id="resources-stage2">
+                        <!-- Resources will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 shadow-2xl mt-8 mb-8">
+                <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">🚀 Projects</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-stage2">
+                    <!-- Projects will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 3: Deep Learning -->
+        <div id="stage3" class="page">
+            <div class="bg-white rounded-3xl p-8 shadow-2xl mb-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="text-5xl">🧠</span>
+                    <div>
+                        <h1 class="text-4xl font-extrabold text-gray-800">Stage 3: Deep Learning</h1>
+                        <p class="text-gray-600">Week 4-5 • 6-7 hours/day</p>
+                    </div>
+                </div>
+                <div class="text-sm font-bold text-indigo-600 mb-4">⏱️ Total Time: 84 hours over 14 days</div>
+                <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="stage3Progress" class="h-full bg-orange-500 transition-all duration-500" style="width: 0%;"></div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">📚 Learning Topics</h3>
+                    <div id="topics-stage3">
+                        <!-- Topics will be dynamically added here -->
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">🔗 Resources</h3>
+                    <div id="resources-stage3">
+                        <!-- Resources will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 shadow-2xl mt-8 mb-8">
+                <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">🚀 Projects</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-stage3">
+                    <!-- Projects will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 4: Generative AI -->
+        <div id="stage4" class="page">
+            <div class="bg-white rounded-3xl p-8 shadow-2xl mb-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="text-5xl">🔥</span>
+                    <div>
+                        <h1 class="text-4xl font-extrabold text-gray-800">Stage 4: Generative AI</h1>
+                        <p class="text-gray-600">Week 6-7 • 7-8 hours/day</p>
+                    </div>
+                </div>
+                <div class="text-sm font-bold text-indigo-600 mb-4">⏱️ Total Time: 98 hours over 14 days</div>
+                <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="stage4Progress" class="h-full bg-pink-500 transition-all duration-500" style="width: 0%;"></div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">📚 Learning Topics</h3>
+                    <div id="topics-stage4">
+                        <!-- Topics will be dynamically added here -->
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">🔗 Resources</h3>
+                    <div id="resources-stage4">
+                        <!-- Resources will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 shadow-2xl mt-8 mb-8">
+                <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">🚀 Projects</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-stage4">
+                    <!-- Projects will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 5: Production -->
+        <div id="stage5" class="page">
+            <div class="bg-white rounded-3xl p-8 shadow-2xl mb-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="text-5xl">🚀</span>
+                    <div>
+                        <h1 class="text-4xl font-extrabold text-gray-800">Stage 5: Production</h1>
+                        <p class="text-gray-600">Week 8 • 6-8 hours/day</p>
+                    </div>
+                </div>
+                <div class="text-sm font-bold text-indigo-600 mb-4">⏱️ Total Time: 42 hours over 7 days</div>
+                <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="stage5Progress" class="h-full bg-purple-500 transition-all duration-500" style="width: 0%;"></div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">📚 Learning Topics</h3>
+                    <div id="topics-stage5">
+                        <!-- Topics will be dynamically added here -->
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">🔗 Resources</h3>
+                    <div id="resources-stage5">
+                        <!-- Resources will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 shadow-2xl mt-8 mb-8">
+                <h3 class="text-2xl font-bold flex items-center gap-2 mb-4 text-gray-800">🚀 Projects</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-stage5">
+                    <!-- Projects will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Page -->
+        <div id="progress" class="page">
+            <div class="text-center text-white mb-8">
+                <h1 class="text-5xl font-extrabold mb-4">📊 Your Progress Dashboard</h1>
+                <p class="text-xl opacity-90">An overview of your journey so far</p>
+            </div>
+            
+            <div class="bg-white rounded-3xl p-8 shadow-2xl mb-8">
+                <div class="grid md:grid-cols-3 gap-6 text-center items-center">
+                    <div class="flex flex-col items-center justify-center p-6 rounded-2xl bg-gray-100 shadow-md">
+                        <div class="circular-progress">
+                            <span class="progress-value" id="overallCompletion">0%</span>
+                        </div>
+                        <p class="text-lg text-gray-600 mt-4">Overall Completion</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-gray-100 shadow-md">
+                        <div class="text-5xl font-bold text-indigo-600" id="totalProjects">0</div>
+                        <p class="text-lg text-gray-600">Projects Completed</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-gray-100 shadow-md">
+                        <div class="text-5xl font-bold text-indigo-600" id="totalHours">0</div>
+                        <p class="text-lg text-gray-600">Hours Logged</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 shadow-2xl mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Stage Progress</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="text-3xl">🌱</span>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="font-bold">Stage 1: Foundations</h3>
+                                <span id="stage1ProgressText" class="text-sm text-gray-600">0%</span>
+                            </div>
+                            <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div id="stage1ProgressDisplay" class="h-full bg-green-500 transition-all duration-500" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-3xl">🤖</span>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="font-bold">Stage 2: ML Basics</h3>
+                                <span id="stage2ProgressText" class="text-sm text-gray-600">0%</span>
+                            </div>
+                            <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div id="stage2ProgressDisplay" class="h-full bg-blue-500 transition-all duration-500" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-3xl">🧠</span>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="font-bold">Stage 3: Deep Learning</h3>
+                                <span id="stage3ProgressText" class="text-sm text-gray-600">0%</span>
+                            </div>
+                            <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div id="stage3ProgressDisplay" class="h-full bg-orange-500 transition-all duration-500" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-3xl">🔥</span>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="font-bold">Stage 4: Generative AI</h3>
+                                <span id="stage4ProgressText" class="text-sm text-gray-600">0%</span>
+                            </div>
+                            <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div id="stage4ProgressDisplay" class="h-full bg-pink-500 transition-all duration-500" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-3xl">🚀</span>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="font-bold">Stage 5: Production</h3>
+                                <span id="stage5ProgressText" class="text-sm text-gray-600">0%</span>
+                            </div>
+                            <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div id="stage5ProgressDisplay" class="h-full bg-purple-500 transition-all duration-500" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Message Box -->
+    <div id="messageBox" class="fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-xl hidden z-[1000] transition-opacity duration-300 opacity-0">
+        <p id="messageText"></p>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'ai_ml_roadmap_progress';
+
+        const roadmapData = {
+            stage1: {
+                topics: [
+                    { name: '📊 Linear Algebra Essentials', status: 'pending' },
+                    { name: '📈 Statistics & Probability', status: 'pending' },
+                    { name: '🐍 Python Advanced Features', status: 'pending' },
+                    { name: '🔢 NumPy & Pandas Mastery', status: 'pending' },
+                    { name: '🔍 Exploratory Data Analysis', status: 'pending' }
+                ],
+                resources: [
+                    { name: '3Blue1Brown: Essence of Linear Algebra', type: 'youtube', link: 'https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xV-p_R69J3h8N' },
+                    { name: 'FreeCodeCamp Python for Data Science', type: 'course', link: 'https://www.freecodecamp.org/news/python-for-data-science/' },
+                    { name: 'Python Data Science Handbook', type: 'book', link: 'https://jakevdp.github.io/PythonDataScienceHandbook/' }
+                ],
+                projects: [
+                    { title: 'Data Cleaning & Preprocessing Project', description: 'Take a raw dataset and perform full data cleaning and preprocessing for analysis.', tech: ['Pandas', 'Numpy', 'Matplotlib'], difficulty: 2, links: [{ type: 'tutorial', link: 'https://www.youtube.com/watch?v=F_f43v6h03o' }] }
+                ]
+            },
+            stage2: {
+                topics: [
+                    { name: '⚙️ Supervised Learning Algorithms', status: 'pending' },
+                    { name: ' clustering, Dimensionality Reduction', status: 'pending' },
+                    { name: '📊 Model Evaluation & Hyperparameter Tuning', status: 'pending' },
+                    { name: '🌳 Ensemble Methods (Random Forest, Gradient Boosting)', status: 'pending' },
+                    { name: '🧩 Feature Engineering & Selection', status: 'pending' }
+                ],
+                resources: [
+                    { name: 'Scikit-learn documentation', type: 'github', link: 'https://scikit-learn.org/stable/' },
+                    { name: 'Andrew Ng\'s Machine Learning course', type: 'course', link: 'https://www.coursera.org/learn/machine-learning' },
+                    { name: 'StatQuest with Josh Starmer', type: 'youtube', link: 'https://www.youtube.com/c/joshstarmer/playlists' }
+                ],
+                projects: [
+                    { title: 'Credit Card Fraud Detection', description: 'Using supervised learning algorithms to identify fraudulent transactions.', tech: ['Logistic Regression', 'SVM', 'Imbalanced Data'], difficulty: 2, links: [{ type: 'github', link: 'https://github.com/manan-arora/Credit-Card-Fraud-Detection-using-Machine-Learning' }] },
+                    { title: 'Customer Segmentation', description: 'K-Means clustering to group customers for targeted marketing.', tech: ['K-Means', 'PCA'], difficulty: 2, links: [{ type: 'tutorial', link: 'https://towardsdatascience.com/customer-segmentation-using-k-means-clustering-d36c138d6174' }] },
+                    { title: 'Sentiment Analysis', description: 'Natural Language Processing for classifying text sentiment.', tech: ['NLP', 'CountVectorizer', 'Naive Bayes'], difficulty: 3, links: [{ type: 'tutorial', link: 'https://www.youtube.com/watch?v=Xy_h3q-u5mI' }] },
+                    { title: 'House Price Prediction', description: 'Regression model to predict housing prices based on various features.', tech: ['Linear Regression', 'Ridge', 'Lasso'], difficulty: 2, links: [{ type: 'github', link: 'https://github.com/krishna-bhat-123/House-Price-Prediction' }] }
+                ]
+            },
+            stage3: {
+                topics: [
+                    { name: '🧠 Neural Network Fundamentals', status: 'pending' },
+                    { name: '🖼️ Convolutional Neural Networks (CNNs)', status: 'pending' },
+                    { name: '📝 Recurrent Neural Networks (RNNs)', status: 'pending' },
+                    { name: 'Attention & Transformers', status: 'pending' }
+                ],
+                resources: [
+                    { name: 'Deep Learning Specialization by Andrew Ng', type: 'course', link: 'https://www.coursera.org/specializations/deep-learning' },
+                    { name: 'PyTorch Documentation', type: 'github', link: 'https://pytorch.org/docs/stable/index.html' },
+                    { name: 'Fast.ai Practical Deep Learning', type: 'course', link: 'https://course.fast.ai/' }
+                ],
+                projects: [
+                    { title: 'Medical Image Segmentation', description: 'U-Net architecture for medical image segmentation with transfer learning.', tech: ['U-Net', 'Medical Imaging'], difficulty: 4, links: [{ type: 'tutorial', link: 'https://www.youtube.com/watch?v=u1loyDCoGbE' }] },
+                    { title: 'Text Summarization', description: 'Using an encoder-decoder RNN with attention mechanism for text summarization.', tech: ['RNN', 'Attention', 'Seq2Seq'], difficulty: 4, links: [{ type: 'github', link: 'https://github.com/abisee/pointer-generator' }] },
+                    { title: 'Object Detection', description: 'YOLOv5 implementation for real-time object detection.', tech: ['YOLO', 'Object Detection', 'Computer Vision'], difficulty: 5, links: [{ type: 'tutorial', link: 'https://www.youtube.com/watch?v=nC930-9x88w' }] }
+                ]
+            },
+            stage4: {
+                topics: [
+                    { name: 'Generative Adversarial Networks (GANs)', status: 'pending' },
+                    { name: 'Diffusion Models', status: 'pending' },
+                    { name: 'Large Language Models (LLMs)', status: 'pending' },
+                    { name: 'Transformer Architecture Deep Dive', status: 'pending' }
+                ],
+                resources: [
+                    { name: 'Hugging Face Transformers library', type: 'github', link: 'https://huggingface.co/docs/transformers/index' },
+                    { name: 'The Annotated Transformer', type: 'blog', link: 'https://nlp.seas.harvard.edu/2018/04/03/attention.html' },
+                    { name: 'Deep Learning for Coders (Chapter 17-19)', type: 'book', link: 'https://course.fast.ai/Lessons/lesson17.html' }
+                ],
+                projects: [
+                    { title: 'Custom Image Generator', description: 'Fine-tuned Stable Diffusion model for specific domain image generation with custom training data.', tech: ['Stable Diffusion', 'Fine-tuning'], difficulty: 4, links: [{ type: 'tutorial', link: 'https://www.youtube.com/watch?v=70H03cv57-o' }] },
+                    { title: 'RAG Chatbot', description: 'A conversational chatbot using Retrieval-Augmented Generation (RAG) with a vector database.', tech: ['LLM', 'RAG', 'Vector DB'], difficulty: 5, links: [{ type: 'github', link: 'https://github.com/langchain-ai/langchain' }] },
+                    { title: 'Music Generation', description: 'Generative model to create short musical sequences.', tech: ['GANs', 'RNN', 'Music Theory'], difficulty: 4, links: [{ type: 'github', link: 'https://github.com/hindupuravinash/deep-learning-projects' }] }
+                ]
+            },
+            stage5: {
+                topics: [
+                    { name: '☁️ MLOps with Docker & Kubernetes', status: 'pending' },
+                    { name: 'Deploying Models with Flask/FastAPI', status: 'pending' },
+                    { name: 'Continuous Integration & Deployment (CI/CD)', status: 'pending' },
+                    { name: 'Portfolio Building & Resume Optimization', status: 'pending' }
+                ],
+                resources: [
+                    { name: 'Full Stack Deep Learning Course', type: 'course', link: 'https://course.fullstackdeeplearning.com/' },
+                    { name: 'Docker Get Started Guide', type: 'github', link: 'https://docs.docker.com/get-started/' },
+                    { name: 'MLOps community', type: 'community', link: 'https://mlops-community.com/' }
+                ],
+                projects: [
+                    { title: 'End-to-End MLOps Pipeline', description: 'Building a complete CI/CD pipeline for a simple classification model.', tech: ['MLOps', 'Docker', 'CI/CD'], difficulty: 5, links: [{ type: 'tutorial', link: 'https://www.youtube.com/watch?v=4sK3N_0p-nI' }] },
+                    { title: 'GenAI Web Application', description: 'Deploying a custom fine-tuned LLM as a web application using FastAPI.', tech: ['FastAPI', 'LLM', 'Deployment'], difficulty: 5, links: [{ type: 'github', link: 'https://github.com/tiangolo/fastapi' }] }
+                ]
+            }
+        };
+
+        const totalItems = Object.values(roadmapData).reduce((acc, stage) => {
+            return acc + stage.topics.length + stage.projects.length;
+        }, 0);
+        
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(roadmapData));
+        }
+
+        function loadProgress() {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                // Merge the saved data with the default structure to handle new additions
+                for (const stage in parsedData) {
+                    if (roadmapData[stage]) {
+                        roadmapData[stage].topics.forEach(topic => {
+                            const savedTopic = parsedData[stage].topics.find(t => t.name === topic.name);
+                            if (savedTopic) topic.status = savedTopic.status;
+                        });
+                        roadmapData[stage].projects.forEach(project => {
+                            const savedProject = parsedData[stage].projects.find(p => p.title === project.title);
+                            if (savedProject) project.status = savedProject.status;
+                        });
+                    }
+                }
+            }
+        }
+
+        function renderStageContent(stageId) {
+            const stageData = roadmapData[stageId];
+            if (!stageData) return;
+
+            // Render Topics
+            const topicsContainer = document.getElementById(`topics-${stageId}`);
+            topicsContainer.innerHTML = '';
+            stageData.topics.forEach(topic => {
+                const statusClass = topic.status === 'completed' ? 'bg-green-100 text-green-700' : topic.status === 'in-progress' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-500';
+                const statusText = topic.status === 'completed' ? 'Completed' : topic.status === 'in-progress' ? 'In Progress' : 'Not Started';
+                topicsContainer.innerHTML += `
+                    <div class="flex items-center justify-between p-4 my-2 rounded-xl transition-all duration-300 cursor-pointer hover:bg-gray-50 bg-gray-100" data-stage-id="${stageId}" data-topic-name="${topic.name}" onclick="toggleTopicStatus(this)">
+                        <span class="text-gray-800 font-medium">${topic.name}</span>
+                        <span class="status-badge text-xs font-bold px-3 py-1 rounded-full ${statusClass}">${statusText}</span>
+                    </div>
+                `;
+            });
+
+            // Render Resources
+            const resourcesContainer = document.getElementById(`resources-${stageId}`);
+            resourcesContainer.innerHTML = '';
+            stageData.resources.forEach(resource => {
+                const typeColorClass = resource.type === 'youtube' ? 'bg-red-100 text-red-600' : resource.type === 'course' ? 'bg-green-100 text-green-600' : 'bg-indigo-100 text-indigo-600';
+                resourcesContainer.innerHTML += `
+                    <div class="flex items-center justify-between p-4 my-2 rounded-xl transition-all duration-300 hover:bg-gray-50 bg-gray-100">
+                        <a href="${resource.link}" target="_blank" class="text-indigo-600 font-medium hover:underline flex-1">${resource.name}</a>
+                        <span class="text-xs font-bold px-2 py-1 rounded-full ${typeColorClass}">${resource.type}</span>
+                    </div>
+                `;
+            });
+
+            // Render Projects
+            const projectsContainer = document.getElementById(`projects-${stageId}`);
+            projectsContainer.innerHTML = '';
+            stageData.projects.forEach(project => {
+                const starIcons = Array(5).fill('★').map((star, i) => `<span class="text-xl ${i < project.difficulty ? 'text-yellow-400' : 'text-gray-300'}">${star}</span>`).join('');
+                const linksHtml = project.links.map(link => {
+                    let linkColorClass = link.type === 'tutorial' ? 'bg-red-100 text-red-600' : link.type === 'github' ? 'bg-gray-800 text-white' : 'bg-green-100 text-green-600';
+                    return `<a href="${link.link}" target="_blank" class="px-3 py-1 text-sm font-medium rounded-full ${linkColorClass}">${link.type}</a>`;
+                }).join('');
+                const techTagsHtml = project.tech.map(tag => `<span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2 py-1 rounded-full">${tag}</span>`).join('');
+                const projectStatus = project.status || 'pending';
+                const statusText = projectStatus === 'completed' ? 'Completed' : 'Not Started';
+                const statusColor = projectStatus === 'completed' ? 'text-green-600' : 'text-gray-500';
+                const cardClass = projectStatus === 'completed' ? 'border-2 border-green-400' : '';
+
+                projectsContainer.innerHTML += `
+                    <div class="bg-gradient-to-br from-gray-50 to-gray-200 p-6 rounded-2xl shadow-md transition-transform duration-300 hover:scale-105 cursor-pointer project-card ${cardClass}" data-stage-id="${stageId}" data-project-title="${project.title}" onclick="toggleProjectStatus(this)">
+                        <div class="flex items-center mb-2">${starIcons}</div>
+                        <h4 class="text-xl font-bold mb-2 text-gray-800">${project.title}</h4>
+                        <p class="text-sm text-gray-600 mb-4">${project.description}</p>
+                        <div class="flex flex-wrap gap-1 mb-4">${techTagsHtml}</div>
+                        <div class="flex gap-2">${linksHtml}</div>
+                        <div class="mt-4 text-sm font-bold project-status text-center ${statusColor}">${statusText}</div>
+                    </div>
+                `;
+            });
+
+            updateProgress();
+        }
+
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            // Show the requested page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('bg-indigo-600', 'text-white'));
+            // Add active class to the current nav link
+            const navLink = document.getElementById(`nav-${pageId}`);
+            if (navLink) {
+                navLink.classList.add('bg-indigo-600', 'text-white');
+            }
+            
+            if (pageId.startsWith('stage')) {
+                renderStageContent(pageId);
+            } else if (pageId === 'progress') {
+                updateProgress();
+            }
+        }
+
+        function toggleTopicStatus(element) {
+            const stageId = element.getAttribute('data-stage-id');
+            const topicName = element.getAttribute('data-topic-name');
+            const topic = roadmapData[stageId].topics.find(t => t.name === topicName);
+            const statusBadge = element.querySelector('.status-badge');
+            
+            if (topic) {
+                if (topic.status === 'pending') {
+                    topic.status = 'in-progress';
+                    statusBadge.classList.remove('bg-gray-100', 'text-gray-500');
+                    statusBadge.classList.add('bg-yellow-100', 'text-yellow-700');
+                    statusBadge.textContent = 'In Progress';
+                    showMessage(`Topic '${topicName}' is now In Progress.`, 2000);
+                } else if (topic.status === 'in-progress') {
+                    topic.status = 'completed';
+                    statusBadge.classList.remove('bg-yellow-100', 'text-yellow-700');
+                    statusBadge.classList.add('bg-green-100', 'text-green-700');
+                    statusBadge.textContent = 'Completed';
+                    showMessage(`Topic '${topicName}' is now Completed!`, 2000);
+                } else {
+                    topic.status = 'pending';
+                    statusBadge.classList.remove('bg-green-100', 'text-green-700');
+                    statusBadge.classList.add('bg-gray-100', 'text-gray-500');
+                    statusBadge.textContent = 'Not Started';
+                    showMessage(`Topic '${topicName}' is now Not Started.`, 2000);
+                }
+            }
+            saveProgress();
+            updateProgress();
+        }
+
+        function toggleProjectStatus(element) {
+            const stageId = element.getAttribute('data-stage-id');
+            const projectName = element.getAttribute('data-project-title');
+            const project = roadmapData[stageId].projects.find(p => p.title === projectName);
+            const projectStatusText = element.querySelector('.project-status');
+            
+            if (project) {
+                if (!project.status || project.status === 'pending') {
+                    project.status = 'completed';
+                    projectStatusText.textContent = 'Completed';
+                    projectStatusText.classList.remove('text-gray-500');
+                    projectStatusText.classList.add('text-green-600');
+                    element.classList.add('border-2', 'border-green-400');
+                    showMessage(`Project '${projectName}' completed!`, 2000);
+                } else {
+                    project.status = 'pending';
+                    projectStatusText.textContent = 'Not Started';
+                    projectStatusText.classList.remove('text-green-600');
+                    projectStatusText.classList.add('text-gray-500');
+                    element.classList.remove('border-2', 'border-green-400');
+                    showMessage(`Project '${projectName}' status reset.`, 2000);
+                }
+            }
+            saveProgress();
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let completedItems = 0;
+            let completedProjects = 0;
+            const totalProjects = Object.values(roadmapData).reduce((acc, stage) => acc + stage.projects.length, 0);
+
+            for (const stageId in roadmapData) {
+                let stageTopicsCompleted = 0;
+                let stageProjectsCompleted = 0;
+
+                roadmapData[stageId].topics.forEach(topic => {
+                    if (topic.status === 'completed') {
+                        completedItems++;
+                        stageTopicsCompleted++;
+                    }
+                });
+
+                roadmapData[stageId].projects.forEach(project => {
+                    if (project.status === 'completed') {
+                        completedItems++;
+                        completedProjects++;
+                        stageProjectsCompleted++;
+                    }
+                });
+
+                const stageProgressElement = document.getElementById(`${stageId}Progress`);
+                if (stageProgressElement) {
+                    const stageTotalItems = roadmapData[stageId].topics.length + roadmapData[stageId].projects.length;
+                    const stageProgress = stageTotalItems > 0 ? (stageTopicsCompleted + stageProjectsCompleted) / stageTotalItems * 100 : 0;
+                    stageProgressElement.style.width = `${stageProgress}%`;
+                }
+
+                const stageProgressDisplay = document.getElementById(`${stageId}ProgressDisplay`);
+                const stageProgressText = document.getElementById(`${stageId}ProgressText`);
+                if (stageProgressDisplay && stageProgressText) {
+                    const stageTotalItems = roadmapData[stageId].topics.length + roadmapData[stageId].projects.length;
+                    const stageProgress = stageTotalItems > 0 ? (stageTopicsCompleted + stageProjectsCompleted) / stageTotalItems * 100 : 0;
+                    stageProgressDisplay.style.width = `${stageProgress}%`;
+                    stageProgressText.textContent = `${Math.round(stageProgress)}%`;
+                }
+            }
+            
+            const overallCompletion = totalItems > 0 ? (completedItems / totalItems) * 100 : 0;
+
+            const overallProgressBar = document.getElementById('overallProgress');
+            if (overallProgressBar) {
+                overallProgressBar.style.width = `${overallCompletion}%`;
+            }
+
+            // Update progress page stats
+            const circularProgress = document.querySelector('.circular-progress');
+            const progressValue = document.querySelector('.progress-value');
+            if (circularProgress && progressValue) {
+                circularProgress.style.background = `conic-gradient(#4ADE80 ${overallCompletion * 3.6}deg, #E5E7EB 0deg)`;
+                progressValue.textContent = `${Math.round(overallCompletion)}%`;
+            }
+
+            const totalProjectsElement = document.getElementById('totalProjects');
+            if (totalProjectsElement) totalProjectsElement.textContent = completedProjects;
+
+            const totalHoursElement = document.getElementById('totalHours');
+            if (totalHoursElement) totalHoursElement.textContent = Math.round((completedItems / totalItems) * 329);
+        }
+        
+        function showMessage(text, duration) {
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+            messageText.textContent = text;
+            messageBox.classList.remove('hidden');
+            setTimeout(() => {
+                messageBox.classList.add('opacity-100');
+            }, 10); // Small delay for the fade-in effect
+            setTimeout(() => {
+                messageBox.classList.remove('opacity-100');
+                setTimeout(() => {
+                    messageBox.classList.add('hidden');
+                }, 300); // Wait for fade-out to complete before hiding
+            }, duration);
+        }
+
+        window.onload = () => {
+            loadProgress();
+            showPage('home');
+            updateProgress();
+        };
+
+    </script>
+</body>
+</html>
